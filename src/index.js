@@ -76,6 +76,26 @@ app.get('/usuarios', (request, response) => {
   });
 })
 
+app.get('/treinamentos_realizados', (request, response) => {
+  connection.getConnection((error, tempCont)=>{
+        if(!!error){
+          tempCont.release();
+          console.log('Error')
+        }else{
+          console.log('Conected!  🚀');
+
+          tempCont.query("SELECT * FROM treinamentos_realizados", (error, rows, fields)=>{
+                tempCont.release();
+                if(!!error){
+                  console.log('Error in the query!!!  ⚠️');
+                }else{
+                  response.json(rows);
+                }
+          })
+        }
+  });
+})
+
 app.listen(3001, ()=> {
   console.log('🚀 Back-and started !');
 });
