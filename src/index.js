@@ -76,7 +76,7 @@ app.get('/usuarios', (request, response) => {
   });
 })
 
-app.listen(3333, ()=> {
+app.listen(3001, ()=> {
   console.log('🚀 Back-and started !');
 });
 
