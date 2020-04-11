@@ -29,7 +29,7 @@ app.get('/funcionarios', (request, response) => {
                   if(!!error){
                     console.log('Error in the query!!!  ⚠️');
                   }else{
-                    response.json(rows);
+                    return response.json(rows);
                   }
             })
           }
