@@ -3,9 +3,11 @@ const mysql = require('mysql');
 
 const app = express();
 
+app.use(express.json());
+
 const connection = mysql.createPool({
   connectionLimit: 50,
-   // host: 'localhost', // O host do banco. Ex: localhost
+    //host: 'localhost', // O host do banco. Ex: localhost
     //user: 'root', // Um usuário do banco. Ex: user 
     //password: '', // A senha do usuário. Ex: user123
     //database: 'teste' // A base de dados a qual a aplicação irá se conectar, deve ser a mesma onde foi executado o Código 1. Ex: node_mysql
@@ -95,6 +97,35 @@ app.get('/treinamentos_realizados', (request, response) => {
         }
   });
 })
+
+app.post('/save', (request, response) => {
+  const recebe = request.body;
+
+  console.log(recebe);
+
+  connection.getConnection((error, tempCont)=>{
+        if(!!error){
+          tempCont.release();
+          console.log('Error')
+        }else{
+          console.log('Conected!  🚀');
+
+  
+          tempCont.query("INSERT INTO teste (firstName,lastName ) VALUES ('emilio', 'emidio')", (error, rows, fields)=>{
+                tempCont.release();
+                if(!!error){
+                  console.log('Error in the query!!!  ⚠️');
+                }else{
+                  response.json(rows);
+                }
+          })
+        }
+  });
+})
+
+
+
+
 
 app.listen(3001, ()=> {
   console.log('🚀 Back-and started !');
