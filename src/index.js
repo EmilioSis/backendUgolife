@@ -10,7 +10,7 @@ const connection = mysql.createPool({
     //host: 'localhost', // O host do banco. Ex: localhost
     //user: 'root', // Um usuário do banco. Ex: user 
     //password: '', // A senha do usuário. Ex: user123
-    //database: 'teste' // A base de dados a qual a aplicação irá se conectar, deve ser a mesma onde foi executado o Código 1. Ex: node_mysql
+    //database: 'ugo' // A base de dados a qual a aplicação irá se conectar, deve ser a mesma onde foi executado o Código 1. Ex: node_mysql
     host: '54.89.62.203',
     user: 'sistecno_ugolife',
     password: 'inicial2011',
@@ -27,7 +27,7 @@ app.get('/funcionarios', (request, response) => {
             console.log('Conected! 🚀 ');
 
             tempCont.query("SELECT * FROM funcionarios", (error, rows, fields)=>{
-                  tempCont.release();
+                  //tempCont.release();
                   if(!!error){
                     console.log('Error in the query!!!  ⚠️');
                   }else{
@@ -109,23 +109,27 @@ app.post('/save', (request, response) => {
           console.log('Error')
         }else{
           console.log('Conected!  🚀');
-
-  
-          tempCont.query("INSERT INTO teste (firstName,lastName ) VALUES ('emilio', 'emidio')", (error, rows, fields)=>{
-                tempCont.release();
+          //console.log('Dentro do else', recebe);
+          try {
+            recebe.map(async(value) => {
+              await tempCont.query(`INSERT INTO recebe_app (nome_usuario,senha_usuario, funcao_usuario, usuario_usuario, email_usuario ) VALUES ('${value.nome_usuario}', '${value.senha_usuario}','${value.funcao_usuario}','${value.usuario_usuario}','${value.email_usuario}')`, (error, rows, fields)=>{
+                
                 if(!!error){
                   console.log('Error in the query!!!  ⚠️');
                 }else{
-                  response.json(rows);
+                  console.log('Gravou o item: ', value.nome_usuario);
                 }
-          })
+              })
+  
+             });
+             tempCont.release();
+          } catch (error) {
+            console.log(error);
+          } 
+
         }
   });
 })
-
-
-
-
 
 app.listen(3001, ()=> {
   console.log('🚀 Back-and started !');
